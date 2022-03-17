@@ -8,6 +8,7 @@
     "url": "git://github.com/m417z/ini-win.git"
   },
   "main": "lib/ini.js",
+  "types": "lib/ini.d.ts",
   "scripts": {
     "eslint": "eslint",
     "lint": "npm run eslint -- lib test",
