@@ -30,7 +30,8 @@
   },
   "license": "ISC",
   "files": [
-    "ini.js"
+    "lib/ini.d.ts",
+    "lib/ini.js"
   ],
   "engines": {
     "node": ">=10"
