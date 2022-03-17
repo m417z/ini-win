@@ -1,5 +1,26 @@
 An ini format parser and serializer for node.
 
+A fork of [npm/ini](https://github.com/npm/ini) with adaptations to be
+more compatible with the Windows API ini functions.
+
+Changes from the original library:
+
+* `encode`
+  * Array keys are written with indices, e.g. `k[0]`, `k[1]`, etc.
+    instead of using `k[]` for all items.
+  * `safe` for escaping values is greatly simplified. Newlines are
+    replaced with spaces, no other characters are escaped, and quotes
+    are added when needed.
+* `decode`
+  * Section lines can have leading and trailing spaces.
+  * Lines starting with `#` aren't treated as comments.
+  * Empty lines are ignored.
+  * No special treatment for array keys.
+  * All values are treated as strings (no special treatment for
+    `true`, `false` and `null`).
+  * `unsafe` for unescaping values is greatly simplified. No
+    characters are unescaped, and comments aren't supported.
+
 Sections are treated as nested objects.  Items before the first
 heading are saved on the object directly.
 
@@ -17,9 +38,6 @@ Consider an ini-file `config.ini` that looks like this:
 
     [paths.default]
     datadir = /var/lib/data
-    array[] = first value
-    array[] = second value
-    array[] = third value
 ```
 
 You can read, manipulate and write the ini-file like so:
@@ -34,7 +52,6 @@ You can read, manipulate and write the ini-file like so:
     config.database.database = 'use_another_database'
     config.paths.default.tmpdir = '/tmp'
     delete config.paths.default.datadir
-    config.paths.default.array.push('fourth value')
 
     fs.writeFileSync('./config_modified.ini', ini.stringify(config, { section: 'section' }))
 ```
@@ -51,10 +68,6 @@ to the filesystem with the following content:
     database=use_another_database
     [section.paths.default]
     tmpdir=/tmp
-    array[]=first value
-    array[]=second value
-    array[]=third value
-    array[]=fourth value
 ```
 
 ## API
@@ -93,7 +106,7 @@ Alias for `encode(object, [options])`
 ### safe(val)
 
 Escapes the string `val` such that it is safe to be used as a key or
-value in an ini-file. Basically escapes quotes. For example
+value in an ini-file. Basically adds quotes if needed. For example
 
 ```js
     ini.safe('"unsafe string"')
@@ -101,7 +114,7 @@ value in an ini-file. Basically escapes quotes. For example
 
 would result in
 
-    "\"unsafe string\""
+    ""unsafe string""
 
 ### unsafe(val)
 
