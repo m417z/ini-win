@@ -2,7 +2,7 @@
   "author": "m417z",
   "name": "ini-win",
   "description": "An ini encoder/decoder for node",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/m417z/ini-win.git"
