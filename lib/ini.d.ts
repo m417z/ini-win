@@ -3,13 +3,11 @@ interface EncodeOptions {
     whitespace?: boolean;
 }
 
-export function decode(str: string): {
-    [key: string]: any;
-};
-export function parse(str: string): {
-    [key: string]: any;
-};
-export function encode(object: any, options?: EncodeOptions | string): string;
-export function stringify(object: any, options?: EncodeOptions | string): string;
+export type iniObject = { [key: string]: string | iniObject };
+
+export function decode(str: string): iniObject;
+export function parse(str: string): iniObject;
+export function encode(object: iniObject, options?: EncodeOptions | string): string;
+export function stringify(object: iniObject, options?: EncodeOptions | string): string;
 export function safe(val: string): string;
 export function unsafe(val: string): string;
